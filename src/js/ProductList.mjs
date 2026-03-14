@@ -21,7 +21,7 @@ export default class ProductList {
     async init() {
         const list = await this.dataSource.getData();
 
-        // Solo quitamos los dos que NO tienen imagen (el Talus 3-person y el Ajax 2-person)
+        
         const filteredList = list.filter(product =>
             product.Id !== "989CG" && product.Id !== "880RT"
         );
