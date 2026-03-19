@@ -9,6 +9,13 @@ function renderCartContents() {
 
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
+
+  // 🔥 agregar listeners aquí
+  const removeButtons = document.querySelectorAll(".remove-item");
+
+  removeButtons.forEach(btn => {
+    btn.addEventListener("click", removeItemFromCart);
+  });
 }
 
 function displayCartTotal(cartItems) {
@@ -21,6 +28,9 @@ function displayCartTotal(cartItems) {
 
 function cartItemTemplate(item) {
   const newItem = `<li class="cart-card divider">
+
+  <span class="remove-item" data-id="${item.Id}">❌</span>
+
   <a href="#" class="cart-card__image">
     <img
       src="${item.Image}"
@@ -38,4 +48,20 @@ function cartItemTemplate(item) {
   return newItem;
 }
 
+function removeItemFromCart(event) {
+  const id = event.target.dataset.id;
+
+  let cart = getLocalStorage("so-cart") || [];
+
+  // 🔥 encontrar solo UNA coincidencia
+  const index = cart.findIndex(item => item.Id == id);
+
+  if (index !== -1) {
+    cart.splice(index, 1); // elimina SOLO uno
+  }
+
+  localStorage.setItem("so-cart", JSON.stringify(cart));
+
+  renderCartContents();
+}
 renderCartContents();
