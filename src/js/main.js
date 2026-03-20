@@ -1,5 +1,8 @@
 import ProductData from "./ProductData.mjs";
 import ProductList from "./ProductList.mjs";
+import { loadHeaderFooter } from "./utils.mjs";
+
+loadHeaderFooter();
 
 // 1. Creamos el cargador de datos para 'tents' (carpas)
 const dataSource = new ProductData("tents");
