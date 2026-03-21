@@ -64,4 +64,31 @@ export async function loadHeaderFooter() {
   // Metemos el contenido en los elementos
   renderWithTemplate(headerTemplate, headerElement);
   renderWithTemplate(footerTemplate, footerElement);
+
+}
+
+// function to the cart
+
+export function getCartCount() {
+  const cart = JSON.parse(localStorage.getItem("so-cart")) || [];
+  return cart.length;
+}
+
+export function updateCartCount() {
+  const count = getCartCount();
+  const cartIcon = document.querySelector(".cart");
+
+  if (!cartIcon) return;
+
+  // delete existing badge if it exists
+  const existing = cartIcon.querySelector(".cart-count");
+  if (existing) existing.remove();
+
+  if (count > 0) {
+    const badge = document.createElement("span");
+    badge.classList.add("cart-count");
+    badge.textContent = count;
+
+    cartIcon.appendChild(badge);
+  }
 }
