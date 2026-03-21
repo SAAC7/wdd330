@@ -272,3 +272,41 @@ footer {
   text-align: right;
   font-weight: bold;
 }
+
+/* Contenedor principal de las categorías */
+.category-grid {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  list-style-type: none;
+  padding: 2rem;
+  flex-wrap: wrap;
+  /* Para que en celulares se acomoden abajo */
+}
+
+/* Cada enlace de categoría */
+.category-grid a {
+  text-decoration: none;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 150px;
+  /* Controla el espacio de cada una */
+}
+
+/* EL TRUCO PARA LAS IMÁGENES GIGANTES */
+.category-grid img {
+  width: 100px;
+  /* Ajusta este número si las quieres más grandes o pequeñas */
+  height: 100px;
+  /* Mantiene un tamaño uniforme */
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.category-grid p {
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
