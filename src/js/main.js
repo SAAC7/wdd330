@@ -1,7 +1,7 @@
-import ProductData from "./ProductData.mjs";
-import ProductList from "./ProductList.mjs";
-import { updateCartCount,loadHeaderFooter } from "./utils.mjs";
-import Alert from "./alert.js";
+import ProductData from './ProductData.mjs';
+import ProductList from './ProductList.mjs';
+import { updateCartCount,loadHeaderFooter } from './utils.mjs';
+import Alert from './alert.js';
 
 
 // 1. Creamos el cargador de datos para 'tents' (carpas)
@@ -16,7 +16,7 @@ const listing = new ProductList('tents', dataSource, element);
 
 
 
-const alerts = new Alert("../json/alerts.json");
+const alerts = new Alert('../json/alerts.json');
 alerts.init();
 
 updateCartCount();

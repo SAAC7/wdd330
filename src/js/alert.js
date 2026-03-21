@@ -17,30 +17,31 @@ export default class Alert {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error("Error loading alerts:", error);
+      // console.error('Error loading alerts:', error);
+      this.renderAlerts('Error loading alerts:', error);
       return [];
     }
   }
 
   renderAlerts(alerts) {
-    const section = document.createElement("section");
-    section.classList.add("alert-list");
+    const section = document.createElement('section');
+    section.classList.add('alert-list');
 
     alerts.forEach(alert => {
-      const p = document.createElement("p");
+      const p = document.createElement('p');
       p.textContent = alert.message;
 
       // aplicar estilos desde JSON
       p.style.backgroundColor = alert.background;
       p.style.color = alert.color;
-      p.style.padding = "10px";
-      p.style.margin = "0";
+      p.style.padding = '10px';
+      p.style.margin = '0';
 
       section.appendChild(p);
     });
 
     // 🔥 insertar antes del main
-    const main = document.querySelector("main");
+    const main = document.querySelector('main');
     main.prepend(section);
   }
 }

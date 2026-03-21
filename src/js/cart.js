@@ -11,13 +11,13 @@ function renderCartContents() {
   }
 
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
-  document.querySelector(".product-list").innerHTML = htmlItems.join("");
+  document.querySelector('.product-list').innerHTML = htmlItems.join('');
 
   // 🔥 agregar listeners aquí
-  const removeButtons = document.querySelectorAll(".remove-item");
+  const removeButtons = document.querySelectorAll('.remove-item');
 
   removeButtons.forEach(btn => {
-    btn.addEventListener("click", removeItemFromCart);
+    btn.addEventListener('click', removeItemFromCart);
   });
 }
 
@@ -54,7 +54,7 @@ function cartItemTemplate(item) {
 function removeItemFromCart(event) {
   const id = event.target.dataset.id;
 
-  let cart = getLocalStorage("so-cart") || [];
+  let cart = getLocalStorage('so-cart') || [];
 
   // 🔥 encontrar solo UNA coincidencia
   const index = cart.findIndex(item => item.Id == id);
@@ -63,7 +63,7 @@ function removeItemFromCart(event) {
     cart.splice(index, 1); // elimina SOLO uno
   }
 
-  localStorage.setItem("so-cart", JSON.stringify(cart));
+  localStorage.setItem('so-cart', JSON.stringify(cart));
 
   renderCartContents();
 }
