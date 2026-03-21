@@ -19,7 +19,6 @@ const listing = new ProductList('tents', dataSource, element);
 const alerts = new Alert('../json/alerts.json');
 alerts.init();
 
-updateCartCount();
 loadHeaderFooter();
 
 listing.init();

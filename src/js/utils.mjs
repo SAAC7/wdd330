@@ -61,10 +61,10 @@ export async function loadHeaderFooter() {
   const headerElement = document.querySelector("#main-header");
   const footerElement = document.querySelector("#main-footer");
 
-  // Metemos el contenido en los elementos
-  renderWithTemplate(headerTemplate, headerElement);
+  renderWithTemplate(headerTemplate, headerElement, null, () => {
+    updateCartCount(); // 🔥 aquí sí funciona
+  });
   renderWithTemplate(footerTemplate, footerElement);
-
 }
 
 // function to the cart
