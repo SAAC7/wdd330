@@ -58,7 +58,34 @@ export async function loadHeaderFooter() {
   const headerElement = document.querySelector("#main-header");
   const footerElement = document.querySelector("#main-footer");
 
-  
-  renderWithTemplate(headerTemplate, headerElement);
+  renderWithTemplate(headerTemplate, headerElement, null, () => {
+    updateCartCount(); // 🔥 aquí sí funciona
+  });
   renderWithTemplate(footerTemplate, footerElement);
+}
+
+// function to the cart
+
+export function getCartCount() {
+  const cart = JSON.parse(localStorage.getItem("so-cart")) || [];
+  return cart.length;
+}
+
+export function updateCartCount() {
+  const count = getCartCount();
+  const cartIcon = document.querySelector(".cart");
+
+  if (!cartIcon) return;
+
+  // delete existing badge if it exists
+  const existing = cartIcon.querySelector(".cart-count");
+  if (existing) existing.remove();
+
+  if (count > 0) {
+    const badge = document.createElement("span");
+    badge.classList.add("cart-count");
+    badge.textContent = count;
+
+    cartIcon.appendChild(badge);
+  }
 }

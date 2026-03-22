@@ -11,6 +11,9 @@ export default class ProductDetails {
         // 1. Buscamos los datos
         this.product = await this.dataSource.findProductById(this.productId);
 
+        console.log("Producto REAL:", this.product); // 👈 AQUÍ
+
+
         // 2. Si el producto existe, dibujamos y activamos el botón
         if (this.product) {
             this.renderProductDetails();
@@ -27,24 +30,76 @@ export default class ProductDetails {
 
         cartContent.push(this.product);
         setLocalStorage("so-cart", cartContent);
-        
+
     }
 
     renderProductDetails() {
-        // Usamos los IDs exactos de tu HTML
-        document.getElementById("productName").innerText = this.product.Name;
-        document.getElementById("productBrandName").innerText = this.product.Brand.Name;
+        const product = this.product;
 
-        // OJO: La ruta de la imagen en el JSON suele ser product.Images.PrimaryLarge
+        const isDiscounted = product.FinalPrice < product.SuggestedRetailPrice;
+
+        const discountAmount = isDiscounted
+            ? Number((product.SuggestedRetailPrice - product.FinalPrice).toFixed(2))
+            : 0;
+
+        const discountPercent = isDiscounted
+            ? Math.round((discountAmount / product.SuggestedRetailPrice) * 100)
+            : 0;
+
+        // Nombre y marca
+        document.getElementById("productName").innerText = product.Name;
+        document.getElementById("productBrandName").innerText = product.Brand.Name;
+
+        // Imagen
         const imgElement = document.getElementById("productImage");
-        imgElement.src = this.product.Images?.PrimaryLarge || this.product.Image;
-        imgElement.alt = this.product.Name;
+        imgElement.src = product.Images.PrimaryLarge;
+        imgElement.alt = product.Name;
 
-        document.getElementById("productFinalPrice").innerText = `$${this.product.FinalPrice}`;
-        document.getElementById("productColorName").innerText = this.product.Colors[0].ColorName;
-        document.getElementById("productDescriptionHtmlSimple").innerHTML = this.product.DescriptionHtmlSimple;
+        // Precio
+        const priceElement = document.getElementById("productFinalPrice");
 
-        // Actualizamos el ID en el botón por si acaso
-        document.getElementById("addToCart").dataset.id = this.product.Id;
+        priceElement.innerHTML = `
+        $${product.FinalPrice}
+        ${isDiscounted
+                ? `<span class="original-price">$${product.SuggestedRetailPrice}</span>`
+                : ""
+            }
+    `;
+
+        // Descuento
+        const imageContainer = document.querySelector(".product-image-container");
+
+        let discountElementBadage = document.getElementById("discountBadge");
+
+        if (!discountElementBadage) {
+            discountElementBadage = document.createElement("span");
+            discountElementBadage.id = "discountBadge";
+            imageContainer.appendChild(discountElementBadage); // 👈 AQUÍ está la clave
+        }
+
+
+        let discountElement = document.getElementById("discountInfo");
+
+        if (!discountElement) {
+            discountElement = document.createElement("p");
+            discountElement.id = "discountInfo";
+            priceElement.parentElement.appendChild(discountElement);
+        }
+
+        discountElement.innerHTML = isDiscounted
+            ? `You save $${discountAmount} (${discountPercent}% OFF)`
+            : "";
+        discountElementBadage.innerHTML = isDiscounted
+            ? `-${discountPercent}% OFF`
+            : "";
+
+        // Otros datos
+        document.getElementById("productColorName").innerText =
+            product.Colors?.[0]?.ColorName || "N/A";
+
+        document.getElementById("productDescriptionHtmlSimple").innerHTML =
+            product.DescriptionHtmlSimple;
+
+        document.getElementById("addToCart").dataset.id = product.Id;
     }
 }

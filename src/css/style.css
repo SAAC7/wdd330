@@ -272,6 +272,7 @@ footer {
   text-align: right;
   font-weight: bold;
 }
+<<<<<<< HEAD
 
 /* Contenedor principal de las categorías */
 .category-grid {
@@ -309,4 +310,151 @@ footer {
   margin: 0;
   font-weight: bold;
   font-size: 1.1rem;
+=======
+/* etiquetas de descuento y precio tachado para productos con descuento */
+.product-card {
+  position: relative;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: red;
+  color: white;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  border-radius: 5px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: gray;
+  margin-left: 6px;
+  font-size: 0.9rem;
+}
+
+/* numeros de items en el carrito */
+
+.cart {
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background: red;
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+/* numeros del descuento en la pagina de detalles del producto */
+.original-price {
+  text-decoration: line-through;
+  color: gray;
+  margin-left: 10px;
+}
+
+#discountInfo {
+  color: green;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* x para eliminar item del carrito  */
+.cart-card {
+  position: relative;
+}
+
+.remove-item {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* alertas */
+.alert-list p {
+  text-align: center;
+  font-weight: bold;
+}
+
+/* categories */
+/* ===== Categories Section ===== */
+
+.categories {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.categories h2 {
+  margin-bottom: 1.5rem;
+}
+
+/* grid */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* card */
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+
+  padding: 1rem;
+  border-radius: 10px;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* imagen */
+.category-card img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 0.5rem;
+}
+
+/* texto */
+.category-card p {
+  font-weight: bold;
+}
+
+/* hover */
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+/* discount badage */
+.product-image-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+#discountBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: red;
+  color: white;
+  padding: 5px 10px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+
+/* responsive to categories */
+@media (min-width: 768px) {
+  .category-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+>>>>>>> a881bd274f05bf0cefc5a690073d552d8f5c153e
 }
