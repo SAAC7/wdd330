@@ -11,8 +11,8 @@ const titleElement = document.getElementById('title');
 titleElement.innerText = `Top Products: ${category.charAt(0).toUpperCase() + category.slice(1)}`;
 
 
-// data source
-const dataSource = new ProductData();
+// 🔥 PASO 1: Pasa la categoría aquí también
+const dataSource = new ProductData(category);
 
 // elemento
 const element = document.querySelector('.product-list');
