@@ -21,3 +21,14 @@ const element = document.querySelector('.product-list');
 const listing = new ProductList(category, dataSource, element);
 
 listing.init();
+// 🔥 Escucha el cambio en el selector de ordenamiento
+const sortElement = document.querySelector('#sortBy');
+
+if (sortElement) {
+    sortElement.addEventListener('change', (e) => {
+        const selectedCriterion = e.target.value;
+        if (selectedCriterion) {
+            listing.sortList(selectedCriterion);
+        }
+    });
+}
