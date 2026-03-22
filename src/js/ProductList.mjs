@@ -12,9 +12,9 @@ function productCardTemplate(product) {
     : 0;
 
   return `<li class="product-card">
-    <a href="product_pages/index.html?product=${product.Id}">
+    <a href="/product_pages/?product=${product.Id}">
       
-      <img src="${product.Image}" alt="Image of ${product.Name}">
+      <img src="${product.Images.PrimaryMedium}" alt="Image of ${product.Name}">
       
       ${
         isDiscounted
@@ -46,7 +46,7 @@ export default class ProductList {
     }
 
     async init() {
-        const list = await this.dataSource.getData();
+        const list = await this.dataSource.getData(this.category);
 
         
         const filteredList = list.filter(product =>

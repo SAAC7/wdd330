@@ -11,6 +11,9 @@ export default class ProductDetails {
         // 1. Buscamos los datos
         this.product = await this.dataSource.findProductById(this.productId);
 
+        console.log("Producto REAL:", this.product); // 👈 AQUÍ
+
+
         // 2. Si el producto existe, dibujamos y activamos el botón
         if (this.product) {
             this.renderProductDetails();
@@ -49,10 +52,10 @@ export default class ProductDetails {
 
         // Imagen
         const imgElement = document.getElementById("productImage");
-        imgElement.src = product.Images?.PrimaryLarge || product.Image;
+        imgElement.src = product.Images.PrimaryLarge;
         imgElement.alt = product.Name;
 
-        // 💰 Precio (AQUÍ está lo importante)
+        // Precio
         const priceElement = document.getElementById("productFinalPrice");
 
         priceElement.innerHTML = `
@@ -63,10 +66,9 @@ export default class ProductDetails {
             }
     `;
 
-        // 🟢 Indicador de descuento
+        // Descuento
         let discountElement = document.getElementById("discountInfo");
 
-        // si no existe en el HTML, lo creamos
         if (!discountElement) {
             discountElement = document.createElement("p");
             discountElement.id = "discountInfo";
@@ -78,8 +80,11 @@ export default class ProductDetails {
             : "";
 
         // Otros datos
-        document.getElementById("productColorName").innerText = product.Colors[0].ColorName;
-        document.getElementById("productDescriptionHtmlSimple").innerHTML = product.DescriptionHtmlSimple;
+        document.getElementById("productColorName").innerText =
+            product.Colors?.[0]?.ColorName || "N/A";
+
+        document.getElementById("productDescriptionHtmlSimple").innerHTML =
+            product.DescriptionHtmlSimple;
 
         document.getElementById("addToCart").dataset.id = product.Id;
     }

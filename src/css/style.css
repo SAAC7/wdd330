@@ -342,3 +342,61 @@ footer {
   text-align: center;
   font-weight: bold;
 }
+
+/* categories */
+/* ===== Categories Section ===== */
+
+.categories {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.categories h2 {
+  margin-bottom: 1.5rem;
+}
+
+/* grid */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* card */
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+
+  padding: 1rem;
+  border-radius: 10px;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* imagen */
+.category-card img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 0.5rem;
+}
+
+/* texto */
+.category-card p {
+  font-weight: bold;
+}
+
+/* hover */
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* responsive to categories */
+@media (min-width: 768px) {
+  .category-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
