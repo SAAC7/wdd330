@@ -67,6 +67,17 @@ export default class ProductDetails {
     `;
 
         // Descuento
+        const imageContainer = document.querySelector(".product-image-container");
+
+        let discountElementBadage = document.getElementById("discountBadge");
+
+        if (!discountElementBadage) {
+            discountElementBadage = document.createElement("span");
+            discountElementBadage.id = "discountBadge";
+            imageContainer.appendChild(discountElementBadage); // 👈 AQUÍ está la clave
+        }
+
+
         let discountElement = document.getElementById("discountInfo");
 
         if (!discountElement) {
@@ -77,6 +88,9 @@ export default class ProductDetails {
 
         discountElement.innerHTML = isDiscounted
             ? `You save $${discountAmount} (${discountPercent}% OFF)`
+            : "";
+        discountElementBadage.innerHTML = isDiscounted
+            ? `-${discountPercent}% OFF`
             : "";
 
         // Otros datos
