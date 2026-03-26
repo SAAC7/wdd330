@@ -8,14 +8,24 @@ function renderCartContents() {
 
   if (cartItems.length > 0) {
     displayCartTotal(cartItems);
+
+    // 🔥 AÑADIR AQUÍ: Listener para el botón de Checkout
+    const checkoutBtn = document.getElementById('checkoutButton');
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener('click', () => {
+        window.location.href = '../checkout/index.html';
+      });
+    }
+  } else {
+    // Opcional: Volver a ocultar si el carrito se vacía
+    document.querySelector('.cart-footer').classList.add('hide');
   }
 
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector('.product-list').innerHTML = htmlItems.join('');
 
-  // 🔥 agregar listeners aquí
+  // Listeners para eliminar items
   const removeButtons = document.querySelectorAll('.remove-item');
-
   removeButtons.forEach(btn => {
     btn.addEventListener('click', removeItemFromCart);
   });

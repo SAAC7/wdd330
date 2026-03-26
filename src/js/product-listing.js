@@ -1,4 +1,4 @@
-import ProductData from './ProductData.mjs';
+import ExternalServices from './ExternalServices.mjs';
 import ProductList from './ProductList.mjs';
 import { loadHeaderFooter, getParam } from './utils.mjs';
 
@@ -12,7 +12,7 @@ titleElement.innerText = `Top Products: ${category.charAt(0).toUpperCase() + cat
 
 
 // 🔥 PASO 1: Pasa la categoría aquí también
-const dataSource = new ProductData(category);
+const dataSource = new ExternalServices(category)
 
 // elemento
 const element = document.querySelector('.product-list');

@@ -1,26 +1,88 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sleep Outside | Checkout</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
 
-    <title>Sleep Outside | Checkout</title>
+<body>
+  <header class="divider" id="main-header"></header>
 
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
+  <main class="divider">
+    <section class="products">
+      <h2>Review & Place your Order</h2>
 
-  <body>
-    <header class="divider" id="main-header"></header>
+      <form id="checkout-form" name="checkout">
+        <fieldset>
+          <legend>Shipping Address</legend>
+          <label for="fname">First Name</label>
+          <input type="text" name="fname" id="fname" required />
+      
+          <label for="lname">Last Name</label>
+          <input type="text" name="lname" id="lname" required />
+      
+          <label for="street">Street</label>
+          <input type="text" name="street" id="street" required />
+      
+          <label for="city">City</label>
+          <input type="text" name="city" id="city" required />
+      
+          <label for="state">State</label>
+          <input type="text" name="state" id="state" required />
+      
+          <label for="zip">Zip Code</label>
+          <input type="text" name="zip" id="zip" required pattern="\d{5,}"
+            title="Introduce un código postal válido (ej. 83440)" />
+        </fieldset>
+      
+        <fieldset>
+          <legend>Payment</legend>
+          <label for="cardNumber">Card Number</label>
+          <input type="text" name="cardNumber" id="cardNumber" required minlength="16" maxlength="16"
+            placeholder="1234123412341234" pattern="\d{16}" title="Deben ser exactamente 16 dígitos" />
+      
+          <label for="expiration">Expiration Date</label>
+          <input type="text" name="expiration" id="expiration" required placeholder="MM/YY" pattern="\d{2}/\d{2}"
+            title="Usa el formato Mes/Año (ej. 08/26)" />
+      
+          <label for="code">Security Code</label>
+          <input type="text" name="code" id="code" required minlength="3" maxlength="3" pattern="\d{3}"
+            title="Usa el código de 3 dígitos (ej. 123)" />
+        </fieldset>
+      
+        <fieldset id="order-summary">
+          <legend>Order Summary</legend>
+          <ul>
+            <li>
+              <label>Item Subtotal</label>
+              <p id="subtotal">$0.00</p>
+            </li>
+            <li>
+              <label>Shipping Estimate</label>
+              <p id="shipping">$0.00</p>
+            </li>
+            <li>
+              <label>Tax</label>
+              <p id="tax">$0.00</p>
+            </li>
+            <li>
+              <label><strong>Order Total</strong></label>
+              <p id="order-total">$0.00</p>
+            </li>
+          </ul>
+        </fieldset>
+      
+        <button type="submit" id="checkout-button">Checkout</button>
+      </form>
+    </section>
+  </main>
 
-    <main class="divider">
-      <section class="products">
-        <h2>Review & Place your Order</h2>
-      </section>
-    </main>
+  <footer id="main-footer"></footer>
 
-    <footer id="main-footer"></footer>
-  </body>
+  <script src="/js/checkout.js" type="module"></script>
+</body>
+
 </html>
-<script src="../js/checkout.js" type="module"></script>
