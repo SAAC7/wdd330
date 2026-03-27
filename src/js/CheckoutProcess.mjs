@@ -1,8 +1,6 @@
-import { getLocalStorage, qs } from "./utils.mjs";
+import { getLocalStorage } from "./utils.mjs";
 import ExternalServices from "./ExternalServices.mjs";
-
-// Helper function to convert the form into a clean JSON object
-
+import { alertMessage, removeAllAlerts } from "./utils.mjs";
 function formDataToJSON(formElement) {
     const formData = new FormData(formElement),
         convertedJSON = {};
@@ -42,18 +40,18 @@ export default class CheckoutProcess {
 
     calculateItemSubtotal() {
         const subtotalElement = document.querySelector(`${this.outputSelector} #subtotal`);
-        // We add up the final price of each product on the list
         this.itemTotal = this.list.reduce((sum, item) => sum + item.FinalPrice, 0);
         subtotalElement.innerText = `$${this.itemTotal.toFixed(2)}`;
     }
 
     calculateOrderTotal() {
+
+        this.tax = this.itemTotal * 0.06;
         // 1. Calculate Taxes (6%)
 
         this.tax = this.itemTotal * 0.06;
 
         // 2. Calculate shipping ($10 for the first item, $2 for each additional item)
-
         if (this.list.length > 0) {
             this.shipping = 10 + (this.list.length - 1) * 2;
         } else {
@@ -84,14 +82,14 @@ export default class CheckoutProcess {
     // ... same imports and constructor ...
 
     async checkout(form) {
-        const json = formDataToJSON(form);
+        const json = formDataToJSON(form); 
 
         // Add required fields with the correct format
 
         json.orderDate = new Date().toISOString();
         json.orderTotal = this.orderTotal.toFixed(2);
         json.tax = this.tax.toFixed(2);
-        json.shipping = this.shipping;
+        json.shipping = this.shipping.toFixed(2);
         json.items = packageItems(this.list);
 
         const services = new ExternalServices();
@@ -104,7 +102,6 @@ export default class CheckoutProcess {
 
             localStorage.removeItem(this.key);
             location.assign("/checkout/success.html");
-
         } catch (err) {
             // If the server returns a 400 error, we'll see why here
 

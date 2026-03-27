@@ -22,3 +22,21 @@ qs("#checkout-form").addEventListener("submit", (e) => {
     // Here we will call the send method in the next step
     myCheckout.checkout(e.target);
 });
+export function alertMessage(message, scroll = true) {
+    const alert = document.createElement("div");
+    alert.classList.add("alert");
+    alert.innerHTML = `<p>${message}</p><span>X</span>`;
+    alert.addEventListener("click", function (e) {
+        if (e.target.tagName === "SPAN") {
+            main.removeChild(this);
+        }
+    });
+
+    const main = document.querySelector("main");
+    main.prepend(alert); 
+    if (scroll) window.scrollTo(0, 0);
+}
+export function removeAllAlerts() {
+    const alerts = document.querySelectorAll(".alert");
+    alerts.forEach((alert) => alert.remove());
+}

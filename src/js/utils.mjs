@@ -76,8 +76,6 @@ export function updateCartCount() {
   const cartIcon = document.querySelector(".cart");
 
   if (!cartIcon) return;
-
-  // delete existing badge if it exists
   const existing = cartIcon.querySelector(".cart-count");
   if (existing) existing.remove();
 
@@ -88,4 +86,25 @@ export function updateCartCount() {
 
     cartIcon.appendChild(badge);
   }
+}
+export function removeAllAlerts() {
+  const alerts = document.querySelectorAll(".alert");
+  alerts.forEach((alert) => alert.remove());
+}
+
+export function alertMessage(message, scroll = true) {
+  const alert = document.createElement("div");
+  alert.classList.add("alert");
+  alert.innerHTML = `<p>${message}</p><span>X</span>`;
+
+  alert.addEventListener("click", function (e) {
+    if (e.target.tagName === "SPAN") {
+      main.removeChild(this);
+    }
+  });
+
+  const main = document.querySelector("main");
+  main.prepend(alert);
+
+  if (scroll) window.scrollTo(0, 0);
 }
