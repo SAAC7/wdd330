@@ -1,24 +1,31 @@
 import { loadHeaderFooter, qs } from "./utils.mjs";
 import CheckoutProcess from "./CheckoutProcess.mjs";
-
-// 1. Cargar el encabezado y pie de página
 loadHeaderFooter();
-
-// 2. Instanciar la clase (usamos "so-cart" que es la llave de tu localStorage)
 const myCheckout = new CheckoutProcess("so-cart", "#order-summary");
-
-// 3. Inicializar (esto mostrará el subtotal de inmediato)
 myCheckout.init();
-
-// 4. Escuchar cuando el usuario sale del campo de código postal (ZIP)
-// Usamos "blur" para que calcule los totales automáticamente al terminar de escribir
 qs("#zip").addEventListener("blur", () => {
     myCheckout.calculateOrderTotal();
 });
-
-// 5. Escuchar el envío del formulario
 qs("#checkout-form").addEventListener("submit", (e) => {
     e.preventDefault();
-    // Aquí llamaremos al método de envío en el siguiente paso
+    removeAllAlerts();
     myCheckout.checkout(e.target);
 });
+export function alertMessage(message, scroll = true) {
+    const alert = document.createElement("div");
+    alert.classList.add("alert");
+    alert.innerHTML = `<p>${message}</p><span>X</span>`;
+    alert.addEventListener("click", function (e) {
+        if (e.target.tagName === "SPAN") {
+            main.removeChild(this);
+        }
+    });
+
+    const main = document.querySelector("main");
+    main.prepend(alert); 
+    if (scroll) window.scrollTo(0, 0);
+}
+export function removeAllAlerts() {
+    const alerts = document.querySelectorAll(".alert");
+    alerts.forEach((alert) => alert.remove());
+}
