@@ -22,6 +22,9 @@ export default class ExternalServices {
     const data = await convertToJson(response);
     return data.Result;
   }
+
+  // --- NEW METHOD FOR STEP 4 ---
+
   async checkout(payload) {
     const options = {
       method: "POST",
@@ -31,6 +34,14 @@ export default class ExternalServices {
       body: JSON.stringify(payload),
     };
     const response = await fetch(`${baseURL}checkout`, options);
-    return await convertToJson(response);
+    const data = await response.json();
+
+    if (response.ok) {
+      return data;
+    } else {
+      // This will route “Invalid Card” messages to the CheckoutProcess catch block
+
+      throw { name: "servicesError", message: data };
+    }
   }
 }

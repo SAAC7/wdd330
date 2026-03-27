@@ -35,22 +35,22 @@
       
           <label for="zip">Zip Code</label>
           <input type="text" name="zip" id="zip" required pattern="\d{5,}"
-            title="Introduce un código postal válido (ej. 83440)" />
+            title="Enter a valid ZIP code (e.g., 83440)" />
         </fieldset>
       
         <fieldset>
           <legend>Payment</legend>
           <label for="cardNumber">Card Number</label>
           <input type="text" name="cardNumber" id="cardNumber" required minlength="16" maxlength="16"
-            placeholder="1234123412341234" pattern="\d{16}" title="Deben ser exactamente 16 dígitos" />
+            placeholder="1234123412341234" pattern="\d{16}" title="It must be exactly 16 digits long" />
       
           <label for="expiration">Expiration Date</label>
           <input type="text" name="expiration" id="expiration" required placeholder="MM/YY" pattern="\d{2}/\d{2}"
-            title="Usa el formato Mes/Año (ej. 08/26)" />
+            title="Use the Month/Year format (e.g., 08/26)" />
       
           <label for="code">Security Code</label>
           <input type="text" name="code" id="code" required minlength="3" maxlength="3" pattern="\d{3}"
-            title="Usa el código de 3 dígitos (ej. 123)" />
+            title="Enter the 3-digit code (e.g., 123)" />
         </fieldset>
       
         <fieldset id="order-summary">

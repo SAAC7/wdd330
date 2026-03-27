@@ -11,6 +11,8 @@ function formDataToJSON(formElement) {
 
     return convertedJSON;
 }
+
+// Function to simplify cart items for the API
 function packageItems(items) {
     return items.map((item) => ({
         id: item.Id,
@@ -43,13 +45,25 @@ export default class CheckoutProcess {
     }
 
     calculateOrderTotal() {
+
         this.tax = this.itemTotal * 0.06;
+        // 1. Calculate Taxes (6%)
+
+        this.tax = this.itemTotal * 0.06;
+
+        // 2. Calculate shipping ($10 for the first item, $2 for each additional item)
         if (this.list.length > 0) {
             this.shipping = 10 + (this.list.length - 1) * 2;
         } else {
             this.shipping = 0;
         }
+
+        // 3. Add everything up to get the final total
+
         this.orderTotal = this.itemTotal + this.tax + this.shipping;
+
+        // 4. Display on screen
+
         this.displayOrderTotals();
     }
 
@@ -63,8 +77,14 @@ export default class CheckoutProcess {
         orderTotalElement.innerText = `$${this.orderTotal.toFixed(2)}`;
     }
 
+    // Inside the CheckoutProcess class in CheckoutProcess.mjs
+
+    // ... same imports and constructor ...
+
     async checkout(form) {
         const json = formDataToJSON(form); 
+
+        // Add required fields with the correct format
 
         json.orderDate = new Date().toISOString();
         json.orderTotal = this.orderTotal.toFixed(2);
@@ -76,12 +96,21 @@ export default class CheckoutProcess {
 
         try {
             const res = await services.checkout(json);
+            console.log("Orden exitosa:", res);
+
+            // Clear cart and redirect
+
             localStorage.removeItem(this.key);
             location.assign("/checkout/success.html");
         } catch (err) {
-            removeAllAlerts(); 
-            for (let key in err.message) {
-                alertMessage(err.message[key]); 
+            // If the server returns a 400 error, we'll see why here
+
+            console.error("Error en la orden:", err);
+            // Optional: display an alert with the specific error
+
+            if (err.message && typeof err.message === 'object') {
+                const errorMsg = Object.values(err.message).join("\n");
+                alert("Problemas con los datos:\n" + errorMsg);
             }
         }
     }
