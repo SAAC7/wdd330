@@ -17,7 +17,8 @@ export default class ExternalServices {
     return data.Result;
   }
 
-  // --- NUEVO MÉTODO PARA EL PASO 4 ---
+  // --- NEW METHOD FOR STEP 4 ---
+
   async checkout(payload) {
     const options = {
       method: "POST",
@@ -33,7 +34,8 @@ export default class ExternalServices {
     if (response.ok) {
       return data;
     } else {
-      // Esto enviará los mensajes de "Invalid Card" al catch de CheckoutProcess
+      // This will route “Invalid Card” messages to the CheckoutProcess catch block
+
       throw { name: "servicesError", message: data };
     }
   }

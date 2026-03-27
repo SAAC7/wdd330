@@ -1,7 +1,8 @@
 import { getLocalStorage, qs } from "./utils.mjs";
 import ExternalServices from "./ExternalServices.mjs";
 
-// Función auxiliar para convertir el formulario en un objeto JSON limpio
+// Helper function to convert the form into a clean JSON object
+
 function formDataToJSON(formElement) {
     const formData = new FormData(formElement),
         convertedJSON = {};
@@ -13,13 +14,13 @@ function formDataToJSON(formElement) {
     return convertedJSON;
 }
 
-// Función para simplificar los items del carrito para la API
+// Function to simplify cart items for the API
 function packageItems(items) {
     return items.map((item) => ({
         id: item.Id,
         name: item.Name,
         price: item.FinalPrice,
-        quantity: 1, // En este proyecto solemos manejar cantidad 1 por simplificación
+        quantity: 1,
     }));
 }
 
@@ -41,26 +42,30 @@ export default class CheckoutProcess {
 
     calculateItemSubtotal() {
         const subtotalElement = document.querySelector(`${this.outputSelector} #subtotal`);
-        // Sumamos el precio final de cada producto en la lista
+        // We add up the final price of each product on the list
         this.itemTotal = this.list.reduce((sum, item) => sum + item.FinalPrice, 0);
         subtotalElement.innerText = `$${this.itemTotal.toFixed(2)}`;
     }
 
     calculateOrderTotal() {
-        // 1. Calcular Impuestos (6%)
+        // 1. Calculate Taxes (6%)
+
         this.tax = this.itemTotal * 0.06;
 
-        // 2. Calcular Envío ($10 por el primero, $2 por cada adicional)
+        // 2. Calculate shipping ($10 for the first item, $2 for each additional item)
+
         if (this.list.length > 0) {
             this.shipping = 10 + (this.list.length - 1) * 2;
         } else {
             this.shipping = 0;
         }
 
-        // 3. Sumar todo para el Total Final
+        // 3. Add everything up to get the final total
+
         this.orderTotal = this.itemTotal + this.tax + this.shipping;
 
-        // 4. Mostrar en pantalla
+        // 4. Display on screen
+
         this.displayOrderTotals();
     }
 
@@ -74,14 +79,15 @@ export default class CheckoutProcess {
         orderTotalElement.innerText = `$${this.orderTotal.toFixed(2)}`;
     }
 
-    // Dentro de la clase CheckoutProcess en CheckoutProcess.mjs
+    // Inside the CheckoutProcess class in CheckoutProcess.mjs
 
-    // ... importaciones y constructor igual ...
+    // ... same imports and constructor ...
 
     async checkout(form) {
         const json = formDataToJSON(form);
 
-        // Agregar campos requeridos con formato correcto
+        // Add required fields with the correct format
+
         json.orderDate = new Date().toISOString();
         json.orderTotal = this.orderTotal.toFixed(2);
         json.tax = this.tax.toFixed(2);
@@ -94,15 +100,17 @@ export default class CheckoutProcess {
             const res = await services.checkout(json);
             console.log("Orden exitosa:", res);
 
-            // Limpiar carrito y redirigir
+            // Clear cart and redirect
+
             localStorage.removeItem(this.key);
             location.assign("/checkout/success.html");
 
         } catch (err) {
-            // Si el servidor responde con 400, aquí veremos por qué
-            console.error("Error en la orden:", err);
+            // If the server returns a 400 error, we'll see why here
 
-            // Opcional: mostrar una alerta con el error específico
+            console.error("Error en la orden:", err);
+            // Optional: display an alert with the specific error
+
             if (err.message && typeof err.message === 'object') {
                 const errorMsg = Object.values(err.message).join("\n");
                 alert("Problemas con los datos:\n" + errorMsg);
