@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["aa--individual4"] # Cambia "main" por el nombre de tu rama de estudios
+    branches: ["aa--individual4"]
 
 permissions:
   contents: read
@@ -27,12 +27,12 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist # Vite guarda el resultado aquí
+          path: ./dist
 
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps: deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
