@@ -46,7 +46,6 @@ export default class CheckoutProcess {
 
     calculateOrderTotal() {
 
-        this.tax = this.itemTotal * 0.06;
         // 1. Calculate Taxes (6%)
 
         this.tax = this.itemTotal * 0.06;
@@ -82,7 +81,7 @@ export default class CheckoutProcess {
     // ... same imports and constructor ...
 
     async checkout(form) {
-        const json = formDataToJSON(form); 
+        const json = formDataToJSON(form);
 
         // Add required fields with the correct format
 
@@ -93,24 +92,25 @@ export default class CheckoutProcess {
         json.items = packageItems(this.list);
 
         const services = new ExternalServices();
-
+        removeAllAlerts();
         try {
             const res = await services.checkout(json);
-            console.log("Orden exitosa:", res);
+            console.log("Successful order:", res);
 
             // Clear cart and redirect
 
             localStorage.removeItem(this.key);
             location.assign("/checkout/success.html");
         } catch (err) {
-            // If the server returns a 400 error, we'll see why here
+            console.error("Order error:", err);
 
-            console.error("Error en la orden:", err);
-            // Optional: display an alert with the specific error
+            removeAllAlerts();
 
             if (err.message && typeof err.message === 'object') {
-                const errorMsg = Object.values(err.message).join("\n");
-                alert("Problemas con los datos:\n" + errorMsg);
+                const errorMsg = Object.values(err.message).join("<br>");
+                alertMessage(errorMsg);
+            } else {
+                alertMessage("An error occurred while processing the order.");
             }
         }
     }
