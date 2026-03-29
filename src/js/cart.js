@@ -1,5 +1,4 @@
-import { getLocalStorage } from './utils.mjs';
-import { loadHeaderFooter } from './utils.mjs';
+import { loadHeaderFooter, getLocalStorage, updateCartCount } from './utils.mjs';
 
 loadHeaderFooter();
 
@@ -32,9 +31,10 @@ function renderCartContents() {
 }
 
 function displayCartTotal(cartItems) {
-  const total = cartItems.reduce((sum, item) => sum + item.FinalPrice, 0);
+  const total = cartItems.reduce((sum, item) => sum + (item.FinalPrice * (item.quantity || 1)), 0);
   const cartFooter = document.querySelector('.cart-footer');
   cartFooter.classList.remove('hide');
+
   document.querySelector('.cart-total').innerText =
     `Total: $${total.toFixed(2)}`;
 }
@@ -54,7 +54,7 @@ function cartItemTemplate(item) {
     <h2 class="card__name">${item.Name}</h2>
   </a>
   <p class="cart-card__color">${item.Colors[0].ColorName}</p>
-  <p class="cart-card__quantity">qty: 1</p>
+  <p class="cart-card__quantity">qty: ${item.quantity || 1}</p>
   <p class="cart-card__price">$${item.FinalPrice}</p>
 </li>`;
   return newItem;
@@ -66,14 +66,19 @@ function removeItemFromCart(event) {
   let cart = getLocalStorage('so-cart') || [];
 
   // 🔥 encontrar solo UNA coincidencia
-  const index = cart.findIndex(item => item.Id == id);
+  const index = cart.find(item => item.Id == id);
 
-  if (index !== -1) {
-    cart.splice(index, 1); // elimina SOLO uno
+  if (index){
+    if (index.quantity > 1){
+      index.quantity -= 1;
+    }
+    else{
+      cart = cart.filter(item => item.Id != id);
+    }
   }
 
   localStorage.setItem('so-cart', JSON.stringify(cart));
-
   renderCartContents();
+  updateCartCount();
 }
 renderCartContents();

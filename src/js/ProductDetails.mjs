@@ -1,4 +1,4 @@
-import { setLocalStorage, getLocalStorage } from "./utils.mjs";
+import { setLocalStorage, getLocalStorage, updateCartCount } from "./utils.mjs";
 
 export default class ProductDetails {
     constructor(productId, dataSource) {
@@ -28,9 +28,21 @@ export default class ProductDetails {
         let cartContent = getLocalStorage("so-cart") || [];
         if (!Array.isArray(cartContent)) cartContent = [];
 
-        cartContent.push(this.product);
-        setLocalStorage("so-cart", cartContent);
+        // Buscar si el producto ya existe en el carrito
+        const existingItem = cartContent.find(
+            item => item.Id === this.product.Id
+        );
 
+        if (existingItem) {
+            // Si ya existe, aumentamos cantidad
+            existingItem.quantity = (existingItem.quantity || 1) + 1;
+        } else {
+            // Si no existe, lo agregamos con cantidad = 1
+            const productToAdd = { ...this.product, quantity: 1 };
+            cartContent.push(productToAdd);
+        }
+        setLocalStorage("so-cart", cartContent);
+        updateCartCount();
     }
 
     renderProductDetails() {
