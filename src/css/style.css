@@ -566,3 +566,22 @@ footer {
   cursor: pointer;
   font-weight: bold;
 }
+/* src/css/style.css o similar */
+.breadcrumbs-container {
+  padding: 10px 20px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.breadcrumb-item {
+  text-transform: capitalize;
+  font-weight: bold;
+}
+#breadcrumb-list {
+  list-style: none;
+  /* Quita el punto negro */
+  padding: 0;
+  margin: 10px 0;
+  display: flex;
+  font-size: 0.9rem;
+}

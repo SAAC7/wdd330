@@ -1,29 +1,34 @@
 import ExternalServices from './ExternalServices.mjs';
 import ProductList from './ProductList.mjs';
-import { loadHeaderFooter, getParam } from './utils.mjs';
+import { loadHeaderFooter, getParam, renderBreadcrumbs } from './utils.mjs'; // 🔥 Añadido renderBreadcrumbs
 
 loadHeaderFooter();
-
-// 🔥 Get the category from the URL
 
 const category = getParam('category');
 
 const titleElement = document.getElementById('title');
 titleElement.innerText = `Top Products: ${category.charAt(0).toUpperCase() + category.slice(1)}`;
 
-
-// 🔥 STEP 1: Enter the category here as well
-
-const dataSource = new ExternalServices(category)
-
+const dataSource = new ExternalServices(category);
 const element = document.querySelector('.product-list');
 
 const listing = new ProductList(category, dataSource, element);
 
-listing.init();
-// 🔥 Listen for changes to the sort selector
-const sortElement = document.querySelector('#sortBy');
+// Modificamos esta parte para capturar los datos y renderizar breadcrumbs
+async function initListing() {
+    await listing.init();
 
+    // Obtenemos la lista de productos para saber cuántos hay
+    const products = await dataSource.getData(category);
+
+    // 🔥 PASO 2: Renderizar los Breadcrumbs
+    renderBreadcrumbs(category, products.length);
+}
+
+initListing();
+
+// Escuchador para el ordenamiento (se mantiene igual)
+const sortElement = document.querySelector('#sortBy');
 if (sortElement) {
     sortElement.addEventListener('change', (e) => {
         const selectedCriterion = e.target.value;

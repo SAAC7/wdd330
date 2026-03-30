@@ -109,3 +109,20 @@ export function alertMessage(message, scroll = true) {
 
   if (scroll) window.scrollTo(0, 0);
 }
+// src/js/utils.mjs
+
+export function renderBreadcrumbs(category, count = null) {
+  const container = document.getElementById("breadcrumb-list");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  // Formatear: "tents" -> "Tents"
+  const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1);
+
+  if (count !== null) {
+    container.innerHTML = `<li class="breadcrumb-item">${formattedCategory} -> (${count} items)</li>`;
+  } else {
+    container.innerHTML = `<li class="breadcrumb-item">${formattedCategory}</li>`;
+  }
+}
