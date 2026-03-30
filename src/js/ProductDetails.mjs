@@ -1,4 +1,5 @@
-import { setLocalStorage, getLocalStorage, updateCartCount } from "./utils.mjs";
+// 🔥 PASO 1: Agregar renderBreadcrumbs al import
+import { setLocalStorage, getLocalStorage, updateCartCount, renderBreadcrumbs } from "./utils.mjs";
 
 export default class ProductDetails {
     constructor(productId, dataSource) {
@@ -11,11 +12,11 @@ export default class ProductDetails {
         // 1. Buscamos los datos
         this.product = await this.dataSource.findProductById(this.productId);
 
-        console.log("Producto REAL:", this.product); // 👈 AQUÍ
-
-
         // 2. Si el producto existe, dibujamos y activamos el botón
         if (this.product) {
+            // 🔥 PASO 2: Ahora sí funcionará porque ya está importado arriba
+            renderBreadcrumbs(this.product.Category);
+
             this.renderProductDetails();
             document.getElementById("addToCart")
                 .addEventListener("click", this.addToCart.bind(this));
@@ -24,20 +25,18 @@ export default class ProductDetails {
         }
     }
 
+    // ... (el resto de tu código addToCart y renderProductDetails se queda igual)
     addToCart() {
         let cartContent = getLocalStorage("so-cart") || [];
         if (!Array.isArray(cartContent)) cartContent = [];
 
-        // Buscar si el producto ya existe en el carrito
         const existingItem = cartContent.find(
             item => item.Id === this.product.Id
         );
 
         if (existingItem) {
-            // Si ya existe, aumentamos cantidad
             existingItem.quantity = (existingItem.quantity || 1) + 1;
         } else {
-            // Si no existe, lo agregamos con cantidad = 1
             const productToAdd = { ...this.product, quantity: 1 };
             cartContent.push(productToAdd);
         }
@@ -47,51 +46,40 @@ export default class ProductDetails {
 
     renderProductDetails() {
         const product = this.product;
-
         const isDiscounted = product.FinalPrice < product.SuggestedRetailPrice;
-
         const discountAmount = isDiscounted
             ? Number((product.SuggestedRetailPrice - product.FinalPrice).toFixed(2))
             : 0;
-
         const discountPercent = isDiscounted
             ? Math.round((discountAmount / product.SuggestedRetailPrice) * 100)
             : 0;
 
-        // Nombre y marca
         document.getElementById("productName").innerText = product.Name;
         document.getElementById("productBrandName").innerText = product.Brand.Name;
 
-        // Imagen
         const imgElement = document.getElementById("productImage");
         imgElement.src = product.Images.PrimaryLarge;
         imgElement.alt = product.Name;
 
-        // Precio
         const priceElement = document.getElementById("productFinalPrice");
-
         priceElement.innerHTML = `
         $${product.FinalPrice}
         ${isDiscounted
                 ? `<span class="original-price">$${product.SuggestedRetailPrice}</span>`
                 : ""
             }
-    `;
+        `;
 
-        // Descuento
         const imageContainer = document.querySelector(".product-image-container");
-
         let discountElementBadage = document.getElementById("discountBadge");
 
         if (!discountElementBadage) {
             discountElementBadage = document.createElement("span");
             discountElementBadage.id = "discountBadge";
-            imageContainer.appendChild(discountElementBadage); // 👈 AQUÍ está la clave
+            imageContainer.appendChild(discountElementBadage);
         }
 
-
         let discountElement = document.getElementById("discountInfo");
-
         if (!discountElement) {
             discountElement = document.createElement("p");
             discountElement.id = "discountInfo";
@@ -105,7 +93,6 @@ export default class ProductDetails {
             ? `-${discountPercent}% OFF`
             : "";
 
-        // Otros datos
         document.getElementById("productColorName").innerText =
             product.Colors?.[0]?.ColorName || "N/A";
 
