@@ -87,6 +87,12 @@ export function updateCartCount() {
 
     cartIcon.appendChild(badge);
   }
+
+cartIcon.classList.add('bounce');
+
+setTimeout(() => {
+  cartIcon.classList.remove('bounce');
+}, 300);
 }
 export function removeAllAlerts() {
   const alerts = document.querySelectorAll(".alert");

@@ -1,4 +1,4 @@
-import { loadHeaderFooter, getLocalStorage, updateCartCount } from './utils.mjs';
+import { loadHeaderFooter, getLocalStorage, updateCartCount, setLocalStorage } from './utils.mjs';
 
 loadHeaderFooter();
 
@@ -28,6 +28,16 @@ function renderCartContents() {
   removeButtons.forEach(btn => {
     btn.addEventListener('click', removeItemFromCart);
   });
+
+  // botones +
+  document.querySelectorAll('.increase').forEach(btn => {
+    btn.addEventListener('click', changeQuantity);
+  });
+
+  // botones -
+  document.querySelectorAll('.decrease').forEach(btn => {
+    btn.addEventListener('click', changeQuantity);
+  });
 }
 
 function displayCartTotal(cartItems) {
@@ -54,7 +64,11 @@ function cartItemTemplate(item) {
     <h2 class="card__name">${item.Name}</h2>
   </a>
   <p class="cart-card__color">${item.Colors[0].ColorName}</p>
-  <p class="cart-card__quantity">qty: ${item.quantity || 1}</p>
+  <p class="cart-card__quantity">
+  <button class="decrease" data-id="${item.Id}">-</button>
+  <span>${item.quantity || 1}</span>
+  <button class="increase" data-id="${item.Id}">+</button>
+</p>
   <p class="cart-card__price">$${item.FinalPrice}</p>
 </li>`;
   return newItem;
@@ -65,20 +79,46 @@ function removeItemFromCart(event) {
 
   let cart = getLocalStorage('so-cart') || [];
 
-  // 🔥 encontrar solo UNA coincidencia
-  const index = cart.find(item => item.Id == id);
+  const item = cart.find(item => item.Id == id);
 
-  if (index){
-    if (index.quantity > 1){
-      index.quantity -= 1;
-    }
-    else{
+  if (item) {
+    if ((item.quantity || 1) > 1) {
+      item.quantity -= 1;
+    } else {
       cart = cart.filter(item => item.Id != id);
     }
   }
 
-  localStorage.setItem('so-cart', JSON.stringify(cart));
-  renderCartContents();
+  setLocalStorage('so-cart', cart);
   updateCartCount();
+  renderCartContents();
 }
+
+
+function changeQuantity(event) {
+  const id = event.target.dataset.id;
+  const isIncrease = event.target.classList.contains('increase');
+
+  let cart = getLocalStorage('so-cart') || [];
+
+  const item = cart.find(item => item.Id == id);
+
+  if (!item) return;
+
+  if (isIncrease) {
+    item.quantity += 1;
+  } else {
+    item.quantity -= 1;
+
+    // si llega a 0, eliminar
+    if (item.quantity <= 0) {
+      cart = cart.filter(item => item.Id != id);
+    }
+  }
+
+  setLocalStorage('so-cart', cart);
+  updateCartCount();
+  renderCartContents(); // 🔥 re-render
+}
+
 renderCartContents();
